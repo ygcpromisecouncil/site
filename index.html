@@ -127,7 +127,7 @@
 
             const HomePage = () => {
                 const isMobile = useIsMobile();
-
+                
                 // Define your long and short texts
                 const texts = {
                     p1: {
@@ -175,6 +175,16 @@
                 return (
                     <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Empowering Students Through Mindfulness: A Path to Resilience</h2>
+                        <div className="text-center mb-8">
+                        <a
+                            href="https://gofund.me/55e3d34d"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block bg-gradient-to-r from-blue-600 to-yellow-600 hover:from-blue-700 hover:to-yellow-700 text-white font-bold py-4 px-8 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-xl hover:shadow-2xl"
+                        >
+                            Donate on GoFundMe
+                        </a>
+                    </div>
                         <p className="text-gray-700 leading-relaxed text-lg mb-6">
                             {isMobile ? texts.p1.short : texts.p1.long}
                         </p>
