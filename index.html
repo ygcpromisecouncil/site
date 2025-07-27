@@ -108,30 +108,95 @@
                 }
             }, []);
 
-            const HomePage = () => (
-                <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Empowering Students Through Mindfulness: A Path to Resilience</h2>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        My name is [Your Name], and I am a dedicated volunteer with <strong className="text-blue-700">Youth Global Citizen (YGC)</strong>, a youth-led program passionately dedicated to raising funds for impactful non-profits. We are working hand-in-hand with one such incredible non-profit, the <strong className="text-blue-700">Promise Council</strong>. We are a group of passionate students, just like those we aim to help, embarking on a vital fundraising initiative to equip middle school students in our community with essential life skills.
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        The Promise Council strives to help students focus on building strong, positive relationships with their teachers and peers. Their core approach involves mentoring students through regular meetings, complemented by the use of specially designed journals in-between these sessions.
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        Our ambitious, yet achievable, goal is to raise <strong className="text-yellow-600">$1,000</strong>. This will allow us to provide <strong className="text-blue-700">Mindfulness Notebooks</strong> to every middle schooler who needs one. These aren't just ordinary notebooks; they are carefully crafted resources, brimming with practical exercises and proven techniques designed to help students master stress, sharpen their focus, and cultivate robust emotional intelligence. These qualities empower youth by building self-esteem, mindfulness, and gratitude.
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        By fostering these crucial qualities, students are able to create better connections with teachers and peers, contribute to a more welcoming and inclusive learning environment, and unlock better opportunities in the future, ultimately leading to greater success in all aspects of their lives.
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        What makes your contribution truly extraordinary is YGC's unwavering commitment to <strong className="text-yellow-600">match every single dollar we raise</strong>. This means your generous donation isn't just a contribution; it's an investment that will be doubled, creating an even greater, more profound impact on the lives of these young individuals. Imagine the collective strength of your support multiplied!
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-lg">
-                        By choosing to sponsor this crucial initiative, your business can play a pivotal and highly visible role in fostering the mental resilience, academic achievement, and overall well-being of the next generation. This is an unparalleled opportunity for your organization to demonstrate its deep commitment to community development and to directly empower the youth who will shape our future. Join us in making a real, lasting difference. <strong className="text-blue-700">All donations will be directly used to purchase and supply these essential journals.</strong>
-                    </p>
-                </div>
-            );
+            // Custom hook or function to detect mobile
+            const useIsMobile = (breakpoint = 768) => { // Tailwind's 'md' breakpoint is 768px
+                const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
 
+                useEffect(() => {
+                    const handleResize = () => {
+                        setIsMobile(window.innerWidth < breakpoint);
+                    };
+
+                    window.addEventListener('resize', handleResize);
+                    return () => window.removeEventListener('resize', handleResize);
+                }, [breakpoint]);
+
+                return isMobile;
+            };
+
+
+            const HomePage = () => {
+                const isMobile = useIsMobile();
+
+                // Define your long and short texts
+                const texts = {
+                    p1: {
+                        long: (<>
+                            <strong className="text-blue-700">Youth Global Citizen (YGC)</strong>, a passionate youth-led program, is partnering with <strong className="text-blue-700">The Promise Council</strong>. YGC is embarking on a vital fundraising initiative to equip middle school students in our community with essential life skills, aiming to help students just like themselves.
+                        </>),
+                        short: (<>
+                            <strong className="text-blue-700">Youth Global Citizen (YGC)</strong> partners with <strong className="text-blue-700">The Promise Council</strong> to equip middle schoolers with life skills.
+                        </>),
+                    },
+                    p2: {
+                        long: "The Promise Council strives to help students focus on building strong, positive relationships with their teachers and peers. Their core approach involves mentoring students through regular meetings, complemented by the use of specially designed journals in between these sessions.",
+                        short: "The Promise Council mentors students, helping them build strong relationships with teachers and peers using specially designed journals.",
+                    },
+                    p3: {
+                        long: (<>
+                            The ambitious, yet achievable, goal is to raise <strong className="text-yellow-600">$1,000</strong>. This will allow YGC and The Promise Council to provide <strong className="text-blue-700">Mindfulness Notebooks</strong> to every middle schooler who needs one. These aren't just ordinary notebooks; they are carefully crafted resources, brimming with practical exercises and proven techniques designed to help students master stress, sharpen their focus, and cultivate robust emotional intelligence. These qualities empower youth by building self-esteem, mindfulness, and gratitude.
+                        </>),
+                        short: (<>
+                            Our goal: raise <strong className="text-yellow-600">$1,000</strong> for <strong className="text-blue-700">Mindfulness Notebooks</strong>. These empower youth with stress management, focus, and emotional intelligence.
+                        </>),
+                    },
+                    p4: {
+                        long: "By fostering these crucial qualities, students are able to create better connections with teachers and peers, contribute to a more welcoming and inclusive learning environment, and unlock better opportunities in the future, ultimately leading to greater success in all aspects of their lives.",
+                        short: "Fostering these qualities helps students build better connections, creates inclusive learning, and unlocks future opportunities for success.",
+                    },
+                    p5: {
+                        long: (<>
+                            What makes a contribution truly extraordinary is YGC's unwavering commitment to <strong className="text-yellow-600">match every single dollar raised</strong>. This means a generous donation isn't just a contribution; it's an investment that will be doubled, creating an even greater, more profound impact on the lives of these young individuals. Imagine the collective strength of your support multiplied!
+                        </>),
+                        short: (<>
+                            Your contribution is extraordinary: YGC will <strong className="text-yellow-600">match every dollar raised</strong>, doubling your impact on these young lives!
+                        </>),
+                    },
+                    p6: {
+                        long: (<>
+                            By choosing to sponsor this crucial initiative, a business can play a pivotal and highly visible role in fostering the mental resilience, academic achievement, and overall well-being of the next generation. This is an unparalleled opportunity for an organization to demonstrate its deep commitment to community development and to directly empower the youth who will shape our future. Join us in making a real, lasting difference. <strong className="text-blue-700">All donations will be directly used to purchase and supply these essential journals.</strong>
+                        </>),
+                        short: (<>
+                            Sponsor this initiative to foster mental resilience and academic achievement. Empower youth and demonstrate your commitment to community development. <strong className="text-blue-700">All donations directly fund these essential journals.</strong>
+                        </>),
+                    },
+                };
+
+                return (
+                    <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Empowering Students Through Mindfulness: A Path to Resilience</h2>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p1.short : texts.p1.long}
+                        </p>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p2.short : texts.p2.long}
+                        </p>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p3.short : texts.p3.long}
+                        </p>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p4.short : texts.p4.long}
+                        </p>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p5.short : texts.p5.long}
+                        </p>
+                        <p className="text-gray-700 leading-relaxed text-lg">
+                            {isMobile ? texts.p6.short : texts.p6.long}
+                        </p>
+                    </div>
+                );
+            };
+            // ... (rest of your App component)
             const AboutUsPage = () => (
                 <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Our Mission: Cultivating Resilience in Young Minds</h2>
