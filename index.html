@@ -4,23 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mindfulness for Middle Schoolers</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- React and ReactDOM CDNs -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- Babel CDN for JSX transformation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Firebase CDNs -->
     <script type="module">
-        // Firebase imports for standalone file
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Expose Firebase functions globally for the React script
         window.firebase = {
             initializeApp,
             getAuth,
@@ -30,18 +23,17 @@
             getFirestore
         };
 
-        // Mock global variables for standalone file, as they are environment-specific
         window.__app_id = 'standalone-fundraising-app';
-        window.__firebase_config = JSON.stringify({}); // Empty config for local testing
-        window.__initial_auth_token = null; // No initial auth token for local testing
+        window.__firebase_config = JSON.stringify({});
+        window.__initial_auth_token = null;
     </script>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Custom styles for rounded corners and shadows on main containers */
         .rounded-xl {
-            border-radius: 0.75rem; /* More rounded */
+            border-radius: 0.75rem;
         }
         .shadow-xl {
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -55,18 +47,14 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // Access React from window object after CDN load
         const { useState, useEffect } = React;
 
-        // Access Firebase functions from window object after module script load
         const { initializeApp, getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, getFirestore } = window.firebase;
 
-        // Global variables for Firebase config (mocked for local file)
         const appId = typeof window.__app_id !== 'undefined' ? window.__app_id : 'default-app-id';
         const firebaseConfig = typeof window.__firebase_config !== 'undefined' ? JSON.parse(window.__firebase_config) : {};
         const initialAuthToken = typeof window.__initial_auth_token !== 'undefined' ? window.__initial_auth_token : null;
 
-        // Main App component
         const App = () => {
             const [currentPage, setCurrentPage] = useState('home');
             const [firebaseApp, setFirebaseApp] = useState(null);
@@ -75,53 +63,54 @@
             const [userId, setUserId] = useState(null);
             const [isAuthReady, setIsAuthReady] = useState(false);
 
-            // Initialize Firebase and set up auth listener
             useEffect(() => {
                 try {
-                    const app = initializeApp(firebaseConfig);
-                    const authInstance = getAuth(app);
-                    const dbInstance = getFirestore(app);
+                    if (Object.keys(firebaseConfig).length > 0 && typeof initializeApp === 'function') {
+                        const app = initializeApp(firebaseConfig);
+                        const authInstance = getAuth(app);
+                        const dbInstance = getFirestore(app);
 
-                    setFirebaseApp(app);
-                    setAuth(authInstance);
-                    setDb(dbInstance);
+                        setFirebaseApp(app);
+                        setAuth(authInstance);
+                        setDb(dbInstance);
 
-                    // Sign in with custom token or anonymously
-                    const signIn = async () => {
-                        try {
-                            if (initialAuthToken) {
-                                await signInWithCustomToken(authInstance, initialAuthToken);
-                            } else {
-                                await signInAnonymously(authInstance);
+                        const signIn = async () => {
+                            try {
+                                if (initialAuthToken) {
+                                    await signInWithCustomToken(authInstance, initialAuthToken);
+                                } else {
+                                    await signInAnonymously(authInstance);
+                                }
+                            } catch (error) {
+                                console.error("Firebase authentication error:", error);
                             }
-                        } catch (error) {
-                            console.error("Firebase authentication error:", error);
-                        }
-                    };
+                        };
 
-                    // Listen for auth state changes
-                    const unsubscribe = onAuthStateChanged(authInstance, (user) => {
-                        if (user) {
-                            setUserId(user.uid);
-                        } else {
-                            setUserId(crypto.randomUUID()); // Use a random ID if not authenticated
-                        }
+                        const unsubscribe = onAuthStateChanged(authInstance, (user) => {
+                            if (user) {
+                                setUserId(user.uid);
+                            } else {
+                                setUserId(crypto.randomUUID());
+                            }
+                            setIsAuthReady(true);
+                        });
+
+                        signIn();
+
+                        return () => unsubscribe();
+                    } else {
+                        console.warn("Firebase not initialized. Missing config or Firebase functions not available.");
+                        setUserId(crypto.randomUUID());
                         setIsAuthReady(true);
-                    });
-
-                    signIn(); // Trigger sign-in
-
-                    // Cleanup subscription on unmount
-                    return () => unsubscribe();
+                    }
                 } catch (error) {
                     console.error("Failed to initialize Firebase:", error);
                 }
-            }, []); // Empty dependency array means this runs once on mount
+            }, []);
 
-            // Page content components
             const HomePage = () => (
-                <div className="p-6 sm:p-8 md:p-12 lg:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
-                    <h2 className="text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Empowering Students Through Mindfulness: A Path to Resilience</h2>
+                <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Empowering Students Through Mindfulness: A Path to Resilience</h2>
                     <p className="text-gray-700 leading-relaxed text-lg mb-6">
                         My name is [Your Name], and I am a dedicated volunteer with <strong className="text-blue-700">Youth Global Citizen (YGC)</strong>, a youth-led program passionately dedicated to raising funds for impactful non-profits. We are working hand-in-hand with one such incredible non-profit, the <strong className="text-blue-700">Promise Council</strong>. We are a group of passionate students, just like those we aim to help, embarking on a vital fundraising initiative to equip middle school students in our community with essential life skills.
                     </p>
@@ -144,8 +133,8 @@
             );
 
             const AboutUsPage = () => (
-                <div className="p-6 sm:p-8 md:p-12 lg:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
-                    <h2 className="text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Our Mission: Cultivating Resilience in Young Minds</h2>
+                <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Our Mission: Cultivating Resilience in Young Minds</h2>
                     <p className="text-gray-700 leading-relaxed text-lg mb-6">
                         The **Youth Global Citizen (YGC)** is a dynamic, student-led program driven by the belief that every young person deserves the opportunity to thrive. We are passionately dedicated to fostering holistic development, providing practical tools, and creating supportive environments where students can build resilience, enhance their well-being, and unlock their full potential. YGC achieves this by raising funds for various impactful non-profit organizations, amplifying their reach and mission.
                     </p>
@@ -159,12 +148,12 @@
             );
 
             const HowToDonatePage = () => (
-                <div className="p-6 sm:p-8 md:p-12 lg:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
-                    <h2 className="text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Your Impact: How Every Contribution Transforms Lives</h2>
+                <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Your Impact: How Every Contribution Transforms Lives</h2>
                     <p className="text-gray-700 leading-relaxed text-lg mb-6">
                         Your support is not just a donation; it's a direct investment in the mental well-being and future success of middle school students. Every contribution, no matter the size, brings us significantly closer to empowering young minds with the essential tools they need to navigate life's challenges. <strong className="text-blue-700">All funds raised will be directly used to purchase and supply the Mindfulness Notebooks.</strong>
                     </p>
-                    <h3 className="text-3xl font-bold text-gray-800 mb-4">Seamless Online Donation via GoFundMe:</h3>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Seamless Online Donation via GoFundMe:</h3>
                     <p className="text-gray-700 leading-relaxed text-lg mb-6">
                         The quickest and most impactful way to contribute is through our secure GoFundMe page. Remember, your generosity here will be <strong className="text-yellow-600">doubled instantly</strong> by the Youth Global Citizen's matching program! This means your $50 donation becomes $100, directly benefiting more students.
                     </p>
@@ -178,7 +167,7 @@
                             Donate on GoFundMe and Double Your Impact
                         </a>
                     </div>
-                    <h3 className="text-3xl font-bold text-gray-800 mb-4">Alternative Ways to Contribute:</h3>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Alternative Ways to Contribute:</h3>
                     <ul className="list-disc list-inside text-gray-700 leading-relaxed text-lg mb-6 space-y-2">
                         <li>
                             <strong className="text-blue-700">Direct Bank Transfer:</strong> For substantial contributions or corporate sponsorships, please contact us directly. We will provide secure bank transfer details to facilitate your impactful gift.
@@ -199,14 +188,14 @@
             );
 
             const ContactUsPage = () => (
-                <div className="p-6 sm:p-8 md:p-12 lg:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
-                    <h2 className="text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Connect With Us: Let's Build a Brighter Future Together</h2>
+                <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Connect With Us: Let's Build a Brighter Future Together</h2>
                     <p className="text-gray-700 leading-relaxed text-lg mb-6">
                         We are eager to connect with you and discuss how your partnership can profoundly impact the lives of middle school students. Whether you have questions, wish to explore a collaboration, or need more detailed information about our initiative, please do not hesitate to reach out. Your interest is invaluable to us.
                     </p>
                     <div className="space-y-6">
                         <div>
-                            <h3 className="text-3xl font-bold text-gray-800 mb-2">Email Us Directly:</h3>
+                            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Email Us Directly:</h3>
                             <p className="text-gray-700 text-lg">
                                 <a href="mailto:[Your Email Address]" className="text-blue-600 hover:underline">
                                     [Your Email Address]
@@ -214,11 +203,11 @@
                             </p>
                         </div>
                         <div>
-                            <h3 className="text-3xl font-bold text-gray-800 mb-2">Call Us:</h3>
+                            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Call Us:</h3>
                             <p className="text-gray-700 text-lg">[Your Phone Number (Optional)]</p>
                         </div>
                         <div>
-                            <h3 className="text-3xl font-bold text-gray-800 mb-2">Our Mailing Address:</h3>
+                            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Our Mailing Address:</h3>
                             <p className="text-gray-700 text-lg">
                                 Youth Global Citizen (YGC)
                                 <br />
@@ -249,35 +238,14 @@
 
             return (
                 <div className="min-h-screen bg-blue-50 font-sans antialiased flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-                    {/* Tailwind CSS CDN */}
-                    {/* Inter font */}
-                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-                    <style>
-                        {`
-                        body {
-                            font-family: 'Inter', sans-serif;
-                        }
-                        /* Custom styles for rounded corners and shadows on main containers */
-                        .rounded-xl {
-                            border-radius: 0.75rem; /* More rounded */
-                        }
-                        .shadow-xl {
-                            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-                        }
-                        .shadow-2xl {
-                            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-                        }
-                        `}
-                    </style>
-
-                    <header className="w-full max-w-5xl bg-white rounded-xl shadow-xl p-4 sm:p-6 md:p-8 mb-10 flex flex-col sm:flex-row justify-between items-center border border-gray-100 sticky top-0 z-50">
-                        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-yellow-600 mb-6 sm:mb-0 text-center sm:text-left">
+                    <header className="w-full max-w-5xl bg-white rounded-xl shadow-xl p-4 sm:p-6 md:p-8 mb-10 flex flex-col sm:flex-row justify-between items-center border border-gray-100 top-0 z-50">
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-yellow-600 mb-6 sm:mb-0 text-center sm:text-left">
                             Mindfulness for Middle Schoolers
                         </h1>
-                        <nav className="flex flex-wrap justify-center gap-3 sm:gap-4">
+                        <nav className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4">
                             <button
                                 onClick={() => setCurrentPage('home')}
-                                className={`py-3 px-6 rounded-md font-semibold text-lg transition duration-300 ease-in-out transform hover:scale-105 ${
+                                className={`py-2 px-4 sm:py-3 sm:px-6 rounded-md font-semibold text-base lg:text-lg transition duration-300 ease-in-out transform hover:scale-105 ${
                                     currentPage === 'home' ? 'bg-gradient-to-r from-blue-600 to-yellow-600 text-white shadow-lg' : 'text-blue-800 hover:bg-blue-50 hover:text-blue-900'
                                 }`}
                             >
@@ -285,7 +253,7 @@
                             </button>
                             <button
                                 onClick={() => setCurrentPage('about')}
-                                className={`py-3 px-6 rounded-md font-semibold text-lg transition duration-300 ease-in-out transform hover:scale-105 ${
+                                className={`py-2 px-4 sm:py-3 sm:px-6 rounded-md font-semibold text-base lg:text-lg transition duration-300 ease-in-out transform hover:scale-105 ${
                                     currentPage === 'about' ? 'bg-gradient-to-r from-blue-600 to-yellow-600 text-white shadow-lg' : 'text-blue-800 hover:bg-blue-50 hover:text-blue-900'
                                 }`}
                             >
@@ -293,7 +261,7 @@
                             </button>
                             <button
                                 onClick={() => setCurrentPage('donate')}
-                                className={`py-3 px-6 rounded-md font-semibold text-lg transition duration-300 ease-in-out transform hover:scale-105 ${
+                                className={`py-2 px-4 sm:py-3 sm:px-6 rounded-md font-semibold text-base lg:text-lg transition duration-300 ease-in-out transform hover:scale-105 ${
                                     currentPage === 'donate' ? 'bg-gradient-to-r from-blue-600 to-yellow-600 text-white shadow-lg' : 'text-blue-800 hover:bg-blue-50 hover:text-blue-900'
                                 }`}
                             >
@@ -301,7 +269,7 @@
                             </button>
                             <button
                                 onClick={() => setCurrentPage('contact')}
-                                className={`py-3 px-6 rounded-md font-semibold text-lg transition duration-300 ease-in-out transform hover:scale-105 ${
+                                className={`py-2 px-4 sm:py-3 sm:px-6 rounded-md font-semibold text-base lg:text-lg transition duration-300 ease-in-out transform hover:scale-105 ${
                                     currentPage === 'contact' ? 'bg-gradient-to-r from-blue-600 to-yellow-600 text-white shadow-lg' : 'text-blue-800 hover:bg-blue-50 hover:text-blue-900'
                                 }`}
                             >
@@ -324,7 +292,6 @@
             );
         };
 
-        // Mount the React app
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
