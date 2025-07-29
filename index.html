@@ -17,7 +17,7 @@
           }
         },
         animation: {
-          'gradient-move': 'gradient-move 3s ease infinite', // Adjust duration and easing as needed
+          'gradient-move': 'gradient-move 3s ease infinite',
         }
       }
     }
@@ -126,8 +126,7 @@
                 }
             }, []);
 
-            // Custom hook or function to detect mobile
-            const useIsMobile = (breakpoint = 768) => { // Tailwind's 'md' breakpoint is 768px
+            const useIsMobile = (breakpoint = 768) => { 
                 const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
 
                 useEffect(() => {
@@ -146,7 +145,7 @@
             const HomePage = () => {
                 const isMobile = useIsMobile();
                 
-                // Define your long and short texts
+                
                 const texts = {
                     p1: {
                         long: (<>
@@ -201,14 +200,14 @@
                             rel="noopener noreferrer"
                             className="inline-block bg-gradient-to-r from-blue-600 to-yellow-600 text-white font-bold py-4 px-8 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-xl hover:shadow-2xl
                             bg-[length:200%_auto]           /* Important: Make background wider than button */
-                            animate-gradient-move           /* Apply the custom animation */
+                            animate-gradient-move            /* Apply the custom animation */
                             hover:from-blue-700 hover:to-yellow-700 /* Keep hover effects */
                             "
                         >
                             Donate on GoFundMe
                         </a>
                     </div>
-                    </div>
+                        </div>
                         <p className="text-gray-700 leading-relaxed text-lg mb-6">
                             {isMobile ? texts.p1.short : texts.p1.long}
                         </p>
@@ -230,86 +229,185 @@
                     </div>
                 );
             };
-            // ... (rest of your App component)
-            const AboutUsPage = () => (
-                <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Our Mission: Cultivating Resilience in Young Minds</h2>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        The **Youth Global Citizen (YGC)** is a dynamic, student-led program driven by the belief that every young person deserves the opportunity to thrive. We are passionately dedicated to fostering holistic development, providing practical tools, and creating supportive environments where students can build resilience, enhance their well-being, and unlock their full potential. YGC achieves this by raising funds for various impactful non-profit organizations, amplifying their reach and mission.
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        Our collaborative strength comes from our proud partnership with the **Promise Council**, a highly respected community-driven initiative. The Promise Council is relentlessly committed to ensuring equitable opportunities for all children, working tirelessly to bridge resource gaps and advocate for programs that elevate educational outcomes and personal growth. Their primary focus is on helping students develop strong, positive relationships with their teachers and peers. They achieve this through a structured mentoring program, involving regular meetings and the strategic use of specially designed journals in-between sessions.
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-lg">
-                        The provision of Mindfulness Notebooks is a cornerstone of our shared mission. These notebooks are not merely a product; they represent our unwavering commitment to equipping middle school students with essential coping mechanisms for managing stress and anxiety, significantly improving their focus, and cultivating profound emotional intelligence during a critical developmental stage. These journals specifically empower youth by building self-esteem, fostering mindfulness, and cultivating gratitude. By developing these vital qualities, students are better equipped to create stronger connections with teachers and peers, contribute to a more welcoming learning environment, and seize better opportunities in the future, ultimately leading to greater academic and personal success. We are united in our vision for a future where every student possesses the mental fortitude, self-awareness, and unwavering support needed to achieve their highest aspirations.
-                    </p>
-                </div>
-            );
-
-            const HowToDonatePage = () => (
-                <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Your Impact: How Every Contribution Transforms Lives</h2>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        Your support is not just a donation; it's a direct investment in the mental well-being and future success of middle school students. Every contribution, no matter the size, brings us significantly closer to empowering young minds with the essential tools they need to navigate life's challenges. <strong className="text-blue-700">All funds raised will be directly used to purchase and supply the Mindfulness Notebooks.</strong>
-                    </p>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Seamless Online Donation via GoFundMe:</h3>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        The quickest and most impactful way to contribute is through our secure GoFundMe page. Remember, your generosity here will be <strong className="text-yellow-600">doubled instantly</strong> by the Youth Global Citizen's matching program! This means your $50 donation becomes $100, directly benefiting more students.
-                    </p>
-                    <div className="text-center mb-8">
-                        <a
-                        href="https://gofund.me/55e3d34d"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block bg-gradient-to-r from-blue-600 via-purple-600 to-yellow-600 text-white font-bold py-4 px-8 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-xl hover:shadow-2xl
-                        bg-[length:200%_auto]           /* Important: Make background wider than button */
-                        animate-gradient-move           /* Apply the custom animation */
-                        hover:from-blue-700 hover:to-yellow-700 /* Keep hover effects */
-                        "
-                        >
-                        Donate on GoFundMe
-                        </a>
+            
+            const AboutUsPage = () => {
+                const isMobile = useIsMobile();
+                const texts = {
+                    p1: {
+                        long: "The Youth Global Citizen (YGC) is a dynamic, student-led program driven by the belief that every young person deserves the opportunity to thrive. We are passionately dedicated to fostering holistic development, providing practical tools, and creating supportive environments where students can build resilience, enhance their well-being, and unlock their full potential. YGC achieves this by raising funds for various impactful non-profit organizations, amplifying their reach and mission.",
+                        short: "Youth Global Citizen (YGC) is a student-led program fostering holistic development and well-being in young people by raising funds for impactful non-profits.",
+                    },
+                    p2: {
+                        long: "Our collaborative strength comes from our proud partnership with the Promise Council, a highly respected community-driven initiative. The Promise Council is relentlessly committed to ensuring equitable opportunities for all children, working tirelessly to bridge resource gaps and advocate for programs that elevate educational outcomes and personal growth. Their primary focus is on helping students develop strong, positive relationships with their teachers and peers. They achieve this through a structured mentoring program, involving regular meetings and the strategic use of specially designed journals in-between sessions.",
+                        short: "We partner with the Promise Council, a community initiative ensuring equitable opportunities for children. They foster positive relationships between students, teachers, and peers through mentoring and specially designed journals.",
+                    },
+                    p3: {
+                        long: "The provision of Mindfulness Notebooks is a cornerstone of our shared mission. These notebooks are not merely a product; they represent our unwavering commitment to equipping middle school students with essential coping mechanisms for managing stress and anxiety, significantly improving their focus, and cultivating profound emotional intelligence during a critical developmental stage. These journals specifically empower youth by building self-esteem, fostering mindfulness, and cultivating gratitude. By developing these vital qualities, students are better equipped to create stronger connections with teachers and peers, contribute to a more welcoming learning environment, and seize better opportunities in the future, ultimately leading to greater academic and personal success. We are united in our vision for a future where every student possesses the mental fortitude, self-awareness, and unwavering support needed to achieve their highest aspirations.",
+                        short: "Mindfulness Notebooks are central to our mission, providing middle schoolers with tools for stress management, focus, and emotional intelligence. They foster self-esteem, mindfulness, and gratitude, leading to better connections and academic success.",
+                    },
+                };
+                return (
+                    <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Our Mission: Cultivating Resilience in Young Minds</h2>
+                        <img
+                            src="image.png"
+                            alt="Youth Global Citizen and Promise Council partnership"
+                            className="w-full h-auto rounded-lg shadow-2xl mb-8"
+                        />
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p1.short : texts.p1.long}
+                        </p>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p2.short : texts.p2.long}
+                        </p>
+                        <p className="text-gray-700 leading-relaxed text-lg">
+                            {isMobile ? texts.p3.short : texts.p3.long}
+                        </p>
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Alternative Ways to Contribute:</h3>
-                    <ul className="list-disc list-inside text-gray-700 leading-relaxed text-lg mb-6 space-y-2">
-                        
-                        <li>
+                );
+            };
+
+            const HowToDonatePage = () => {
+                const isMobile = useIsMobile();
+                const texts = {
+                    p1: {
+                        long: (<>
+                            Your support is not just a donation; it's a direct investment in the mental well-being and future success of middle school students. Every contribution, no matter the size, brings us significantly closer to empowering young minds with the essential tools they need to navigate life's challenges. <strong className="text-blue-700">All funds raised will be directly used to purchase and supply the Mindfulness Notebooks.</strong>
+                        </>),
+                        short: (<>
+                            Your donation invests in middle schoolers' mental well-being. Every contribution empowers young minds. <strong className="text-blue-700">All funds directly purchase Mindfulness Notebooks.</strong>
+                        </>),
+                    },
+                    h3_1: {
+                        long: "Seamless Online Donation via GoFundMe:",
+                        short: "Donate Online via GoFundMe:",
+                    },
+                    p2: {
+                        long: (<>
+                            The quickest and most impactful way to contribute is through our secure GoFundMe page. Remember, your generosity here will be <strong className="text-yellow-600">doubled instantly</strong> by the Youth Global Citizen's matching program! This means your $50 donation becomes $100, directly benefiting more students.
+                        </>),
+                        short: (<>
+                            Donate via GoFundMe for instant impact; your contribution is <strong className="text-yellow-600">doubled</strong> by our matching program!
+                        </>),
+                    },
+                    h3_2: {
+                        long: "Alternative Ways to Contribute:",
+                        short: "Other Ways to Give:",
+                    },
+                    li1: {
+                        long: (<>
                             <strong className="text-blue-700">Check by Mail:</strong> You can also mail a check, made payable to "Youth Global Citizen," to ensure your support reaches us directly:
                             <br />
                             <span className="block mt-2">[Your Organization's Address Here]</span>
-                        </li>
-                    </ul>
-                    <p className="text-gray-700 leading-relaxed text-lg">
-                        Every dollar you contribute is a step towards a more mindful, resilient generation. Thank you for your profound generosity and unwavering commitment to the future of our youth. Your support truly makes a difference.
-                    </p>
-                </div>
-            );
+                        </>),
+                        short: (<>
+                            <strong className="text-blue-700">Check by Mail:</strong> Make checks payable to "Youth Global Citizen" and mail to [Your Organization's Address Here].
+                        </>),
+                    },
+                    p3: {
+                        long: "Every dollar you contribute is a step towards a more mindful, resilient generation. Thank you for your profound generosity and unwavering commitment to the future of our youth. Your support truly makes a difference.",
+                        short: "Every dollar helps create a mindful, resilient generation. Thank you for your commitment to our youth.",
+                    },
+                };
 
-            const ContactUsPage = () => (
-                <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Connect With Us: Let's Build a Brighter Future Together</h2>
-                    <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                        We are eager to connect with you and discuss how your partnership can profoundly impact the lives of middle school students. Whether you have questions, wish to explore a collaboration, or need more detailed information about our initiative, please do not hesitate to reach out. Your interest is invaluable to us.
-                    </p>
-                    <div className="space-y-6">
-                        <div>
-                            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Email Us Directly:</h3>
-                            <p className="text-gray-700 text-lg">
-                                <a href="mailto:[Your Email Address]" className="text-blue-600 hover:underline">
-                                    ygcpromisecouncilteam@gmail.com
-                                </a>
-                            </p>
+                return (
+                    <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Your Impact: How Every Contribution Transforms Lives</h2>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p1.short : texts.p1.long}
+                        </p>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">{isMobile ? texts.h3_1.short : texts.h3_1.long}</h3>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p2.short : texts.p2.long}
+                        </p>
+                        <div className="text-center mb-8">
+                            <a
+                            href="https://gofund.me/55e3d34d"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block bg-gradient-to-r from-blue-600 via-purple-600 to-yellow-600 text-white font-bold py-4 px-8 rounded-md transition duration-300 ease-in-out transform hover:scale-105 shadow-xl hover:shadow-2xl
+                            bg-[length:200%_auto]           /* Important: Make background wider than button */
+                            animate-gradient-move            /* Apply the custom animation */
+                            hover:from-blue-700 hover:to-yellow-700 /* Keep hover effects */
+                            "
+                            >
+                            Donate on GoFundMe
+                            </a>
                         </div>
-                        <div>
-                            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Call Us:</h3>
-                            <p className="text-gray-700 text-lg">309-314-7127</p>
-                        </div>
-                        <p className="text-gray-700 leading-relaxed text-lg pt-4">
-                            We eagerly anticipate connecting with you and collaborating to champion the mental well-being and academic success of middle school students. Your engagement is key to our shared success.
+                        <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">{isMobile ? texts.h3_2.short : texts.h3_2.long}</h3>
+                        <ul className="list-disc list-inside text-gray-700 leading-relaxed text-lg mb-6 space-y-2">
+                            <li>
+                                {isMobile ? texts.li1.short : texts.li1.long}
+                            </li>
+                        </ul>
+                        <p className="text-gray-700 leading-relaxed text-lg">
+                            {isMobile ? texts.p3.short : texts.p3.long}
                         </p>
                     </div>
-                </div>
-            );
+                );
+            };
+
+            const ContactUsPage = () => {
+                const isMobile = useIsMobile();
+                const texts = {
+                    p1: {
+                        long: "We are eager to connect with you and discuss how your partnership can profoundly impact the lives of middle school students. Whether you have questions, wish to explore a collaboration, or need more detailed information about our initiative, please do not hesitate to reach out. Your interest is invaluable to us.",
+                        short: "Contact us to discuss partnerships, collaborations, or questions about our initiative. Your interest is invaluable.",
+                    },
+                    h3_1: {
+                        long: "Email Us Directly:",
+                        short: "Email Us:",
+                    },
+                    p2: {
+                        long: (<>
+                            <a href="mailto:ygcpromisecouncilteam@gmail.com" className="text-blue-600 hover:underline">
+                                ygcpromisecouncilteam@gmail.com
+                            </a>
+                        </>),
+                        short: (<>
+                            <a href="mailto:ygcpromisecouncilteam@gmail.com" className="text-blue-600 hover:underline">
+                                ygcpromisecouncilteam@gmail.com
+                            </a>
+                        </>),
+                    },
+                    h3_2: {
+                        long: "Call Us:",
+                        short: "Call Us:",
+                    },
+                    p3: {
+                        long: "309-314-7127",
+                        short: "309-314-7127",
+                    },
+                    p4: {
+                        long: "We eagerly anticipate connecting with you and collaborating to champion the mental well-being and academic success of middle school students. Your engagement is key to our shared success.",
+                        short: "We look forward to connecting and collaborating to champion middle school students' well-being and academic success. Your engagement is vital.",
+                    },
+                };
+
+                return (
+                    <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-white rounded-xl shadow-xl mb-8 border border-gray-100">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-800 mb-6 text-center leading-tight">Connect With Us: Let's Build a Brighter Future Together</h2>
+                        <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                            {isMobile ? texts.p1.short : texts.p1.long}
+                        </p>
+                        <div className="space-y-6">
+                            <div>
+                                <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">{isMobile ? texts.h3_1.short : texts.h3_1.long}</h3>
+                                <p className="text-gray-700 text-lg">
+                                    {isMobile ? texts.p2.short : texts.p2.long}
+                                </p>
+                            </div>
+                            <div>
+                                <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">{isMobile ? texts.h3_2.short : texts.h3_2.long}</h3>
+                                <p className="text-gray-700 text-lg">{isMobile ? texts.p3.short : texts.p3.long}</p>
+                            </div>
+                            <p className="text-gray-700 leading-relaxed text-lg pt-4">
+                                {isMobile ? texts.p4.short : texts.p4.long}
+                            </p>
+                        </div>
+                    </div>
+                );
+            };
 
             const renderPage = () => {
                 switch (currentPage) {
